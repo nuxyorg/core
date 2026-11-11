@@ -24,3 +24,8 @@ export type HostToWorkerMessage =
       payload?: unknown
       callerExtId?: string
     }
+  | {
+      kind: 'event'
+      type: typeof import('./notifications.js').NOTIFICATION_EVENT_TYPE
+      event: import('./notifications.js').NotificationEvent
+    }

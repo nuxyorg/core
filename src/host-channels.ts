@@ -14,6 +14,8 @@ export const HostChannel = {
   ICONPACK_REGISTER: 'iconpack:register',
   IPC_BROADCAST: 'ipc:broadcast',
   REGISTRY_GET_CALLABLE_TOOLS: 'registry:getCallableTools',
+  NOTIFICATION_SHOW: 'notifications:show',
+  NOTIFICATION_CLOSE: 'notifications:close',
 } as const
 
 export type HostChannelName = (typeof HostChannel)[keyof typeof HostChannel]

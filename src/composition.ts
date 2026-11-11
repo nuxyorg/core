@@ -1,4 +1,4 @@
-import type { ExtensionManifest } from './types.js'
+import type { ExtensionManifest, QueryAttachment } from './types.js'
 
 export interface CompositionSlotDeclaration {
   /** Stable slot name, e.g. "background-layer" */
@@ -42,6 +42,8 @@ export interface NuxyToolElement {
   query: string
   committedQuery: string
   extensionId: string
+  /** Omnibar attachments handed over when the tool was opened (e.g. a pasted image). */
+  attachments?: QueryAttachment[]
   onToolActivate?(ctx: ToolActivateContext): void | Promise<void>
   onToolDeactivate?(): void
 }

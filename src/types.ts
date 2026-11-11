@@ -1,5 +1,50 @@
 import type { QueryType } from './query-context.js'
 
+/** Home-page grouping for tools (`manifest.category`). */
+export type ExtensionCategory =
+  | 'system'
+  | 'productivity'
+  | 'media'
+  | 'ai'
+  | 'developer'
+  | 'search'
+  | 'utilities'
+
+export const EXTENSION_CATEGORIES: readonly ExtensionCategory[] = [
+  'system',
+  'productivity',
+  'media',
+  'ai',
+  'developer',
+  'search',
+  'utilities',
+]
+
+/** Kind of an omnibar attachment (see `QueryAttachment`). */
+export type QueryAttachmentKind = 'image'
+
+/** A file attached to the omnibar query (e.g. a pasted image), stored under ~/.cache/nuxy/attachments. */
+export interface QueryAttachment {
+  kind: QueryAttachmentKind
+  /** Absolute path of the stored file. */
+  path: string
+  mime: string
+  width: number
+  height: number
+  /** Bytes. */
+  size: number
+  sha1: string
+}
+
+/** Payload the shell sends to a provider's `eval` channel. */
+export interface ProviderEvalPayload {
+  text: string
+  /** Present only for providers that declare `providerAccepts`. */
+  attachments?: QueryAttachment[]
+  /** True when called for the home glance row (`providerGlance`). */
+  glance?: boolean
+}
+
 export type ExtensionType =
   | 'tool'
   | 'provider'
@@ -8,6 +53,13 @@ export type ExtensionType =
   | 'theme'
   | 'iconpack'
   | 'uikit'
+
+export type ToolWindowDimension = 'auto' | number
+
+export interface ToolWindowSize {
+  width?: ToolWindowDimension
+  height?: ToolWindowDimension
+}
 
 export type ExtensionPermission =
   | 'storage'
@@ -92,6 +144,29 @@ export interface ExtensionManifest {
   /** Custom omnibar placeholder shown when this extension is active. */
   placeholder?: string
   /**
+   * Home-page category for tools. The shell groups tools by category on the
+   * empty-query home page (collapsed rows). Omitted → `utilities`.
+   */
+  category?: ExtensionCategory
+  /** Provider presentation: `list` rows (default), `result` cards (inline answers), `compare` cards. */
+  providerType?: 'list' | 'result' | 'compare'
+  /** Providers sharing a group id are merged into one omnibar section. */
+  providerGroup?: string
+  /** Section label for `providerGroup`. */
+  providerGroupLabel?: string
+  /**
+   * When true, the shell calls this provider's `eval` with `{ text: '', glance: true }`
+   * on the empty-query home page; it may return at most one short item that is
+   * shown in the home "glance" row (e.g. clock, weather, next event).
+   */
+  providerGlance?: boolean
+  /**
+   * Attachment kinds this provider handles. When the omnibar holds an attachment,
+   * only providers that accept its kind are evaluated, with
+   * `{ text, attachments: QueryAttachment[] }`.
+   */
+  providerAccepts?: QueryAttachmentKind[]
+  /**
    * Localisation configuration. Declare this when the extension ships translation
    * files. Omitting it means the extension is English-only and no locale loading
    * is attempted.
@@ -115,6 +190,13 @@ export interface ExtensionManifest {
      * conversation rather than above it. Defaults to "top".
      */
     omniBarPosition?: 'top' | 'bottom'
+    /**
+     * Shell size while this tool is active. `"auto"` fits the tool's content
+     * (measured by the shell, animated, and kept centered); a number is a fixed
+     * pixel size. Both are capped by `windowWidth` / `windowMaxHeight`.
+     * Omitted dimensions use the default layout (windowWidth × windowMaxHeight).
+     */
+    windowSize?: ToolWindowSize
   }
   /**
    * Composition slots this extension may provide (shell) or claim (overlays).

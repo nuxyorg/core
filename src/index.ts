@@ -1,5 +1,10 @@
 import type { NowPlaying } from './media'
 import type { IpcResult, ThemeDefinition, IconPackDefinition } from './types'
+import type {
+  NotificationOptions,
+  NotificationShowResult,
+  NotificationEvent,
+} from './notifications'
 
 export type { NowPlaying } from './media'
 
@@ -61,6 +66,8 @@ export interface CoreContext {
   }
   db: {
     open: (name: string) => DbHandle
+    /** Absolute path of the SQLite file `open(name)` uses (in the extension's data dir). */
+    path: (name: string) => string
   }
   shell: {
     open: (pathOrUrl: string) => Promise<void>
@@ -68,7 +75,7 @@ export interface CoreContext {
       cmd: string,
       args: string[],
       opts?: { maxBuffer?: number }
-    ) => Promise<{ stdout: string; code: number }>
+    ) => Promise<{ stdout: string; stderr?: string; code: number }>
     spawn: (cmd: string, args: string[]) => SpawnHandle
   }
   media: {
@@ -77,6 +84,14 @@ export interface CoreContext {
   storage: {
     read: <T>(file: string) => Promise<T | null>
     write: <T>(file: string, data: T) => Promise<void>
+  }
+  /** Desktop notifications. Requires the `notifications` permission. */
+  notifications: {
+    show: (options: NotificationOptions) => Promise<NotificationShowResult>
+    /** Close a notification previously returned by `show`. */
+    close: (id: string) => Promise<void>
+    /** Subscribe to body clicks / action presses. Returns an unsubscribe function. */
+    onAction: (listener: (event: NotificationEvent) => void) => () => void
   }
   ipc: {
     handle: <T, R>(
@@ -157,6 +172,8 @@ export type {
   ExtensionManifest,
   ExtensionIpcManifest,
   ExtensionLocaleConfig,
+  ToolWindowDimension,
+  ToolWindowSize,
   ExtensionPermission,
   ExtensionRuntimeMeta,
   ExtensionType,
@@ -170,7 +187,12 @@ export type {
   ExtensionSettingField,
   ExtensionSettingsSchema,
   ExtensionSettingsInfo,
+  ExtensionCategory,
+  QueryAttachment,
+  QueryAttachmentKind,
+  ProviderEvalPayload,
 } from './types'
+export { EXTENSION_CATEGORIES } from './types'
 export { HostChannel } from './host-channels'
 export type { HostChannelName } from './host-channels'
 export type { WorkerToHostMessage, HostToWorkerMessage } from './messages'
@@ -219,3 +241,32 @@ export type {
   ExtensionCallerCommand,
   ExtensionCallerConfig,
 } from './deeplink'
+export { NOTIFICATION_EVENT_TYPE } from './notifications'
+export type {
+  NotificationUrgency,
+  NotificationAction,
+  NotificationOptions,
+  NotificationShowResult,
+  NotificationEvent,
+} from './notifications'
+export {
+  tokenizeQuery,
+  parseTokens,
+  hasToken,
+  applyToken,
+  setToken,
+  removeToken,
+  valueToken,
+  flagToken,
+} from './query-tokens'
+export type { TokenSpec, QueryToken, ParsedTokens } from './query-tokens'
+export { waitForKeyRelease } from './key-release'
+export {
+  parseNaturalTime,
+  parseNaturalTimeAll,
+  parseDuration,
+  formatDuration,
+  formatRemaining,
+  foldDiacritics,
+} from './natural-time'
+export type { NaturalTimeKind, NaturalTimeOptions, NaturalTimeMatch } from './natural-time'

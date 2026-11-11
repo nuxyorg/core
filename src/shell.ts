@@ -50,7 +50,11 @@ export interface ShellBridgeSnapshot {
   searchPlaceholder: string | null
 }
 
-export type OmniBarControlAction = 'show' | 'hide' | 'clear'
+/**
+ * `show` / `hide` / `clear` toggle or reset the omnibar; `{ type: 'set', value }` replaces
+ * the query (e.g. a tool inserting a filter token chosen from the Ctrl+K palette).
+ */
+export type OmniBarControlAction = 'show' | 'hide' | 'clear' | { type: 'set'; value: string }
 
 export interface ResetToolStateOptions {
   /** When false, keep the current omnibar placeholder (tool-to-tool switch). Default true. */
@@ -84,6 +88,16 @@ export interface CoreShell {
 
   /** @internal Registered by the shell extension during bootstrap. */
   bindReturnToShell(handler: () => void): () => void
+
+  /**
+   * Activates another tool (mounting it if needed) with `query` as its omnibar
+   * text — e.g. a "missing dependencies" action opening the Package Manager
+   * prefilled with package names. Unknown tool ids are ignored by the shell.
+   */
+  openTool(toolId: string, query?: string): void
+
+  /** @internal Registered by the shell extension during bootstrap. */
+  bindOpenTool(handler: (toolId: string, query: string) => void): () => void
 
   /**
    * When true, `shell-reset` (e.g. on window show) skips deactivating the active tool.
