@@ -29,3 +29,8 @@ export type HostToWorkerMessage =
       type: typeof import('./notifications.js').NOTIFICATION_EVENT_TYPE
       event: import('./notifications.js').NotificationEvent
     }
+  | {
+      kind: 'event'
+      type: typeof import('./island.js').ISLAND_EVENT_TYPE
+      event: import('./island.js').IslandEvent
+    }

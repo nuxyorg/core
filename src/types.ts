@@ -66,6 +66,7 @@ export type ExtensionPermission =
   | 'clipboard'
   | 'network'
   | 'notifications'
+  | 'island'
   | 'media'
   | 'shell'
   | 'fs'

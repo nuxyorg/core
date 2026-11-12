@@ -16,6 +16,9 @@ export const HostChannel = {
   REGISTRY_GET_CALLABLE_TOOLS: 'registry:getCallableTools',
   NOTIFICATION_SHOW: 'notifications:show',
   NOTIFICATION_CLOSE: 'notifications:close',
+  ISLAND_SHOW: 'island:show',
+  ISLAND_DISMISS: 'island:dismiss',
+  ISLAND_SET_STATUS: 'island:setStatus',
 } as const
 
 export type HostChannelName = (typeof HostChannel)[keyof typeof HostChannel]

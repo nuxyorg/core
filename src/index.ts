@@ -5,6 +5,7 @@ import type {
   NotificationShowResult,
   NotificationEvent,
 } from './notifications'
+import type { IslandOptions, IslandShowResult, IslandEvent, IslandStatus } from './island'
 
 export type { NowPlaying } from './media'
 
@@ -92,6 +93,16 @@ export interface CoreContext {
     close: (id: string) => Promise<void>
     /** Subscribe to body clicks / action presses. Returns an unsubscribe function. */
     onAction: (listener: (event: NotificationEvent) => void) => () => void
+  }
+  /** Dynamic island (panel anchor surface). Requires the `island` permission. */
+  island: {
+    show: (options: IslandOptions) => Promise<IslandShowResult>
+    /** Remove an activity previously returned by `show` (on screen or queued). */
+    dismiss: (id: string) => Promise<void>
+    /** Set (or clear with `null`) this extension's status row in the dot-click overview. */
+    setStatus: (status: IslandStatus | null) => Promise<void>
+    /** Subscribe to island clicks / action presses. Returns an unsubscribe function. */
+    onAction: (listener: (event: IslandEvent) => void) => () => void
   }
   ipc: {
     handle: <T, R>(
@@ -247,6 +258,15 @@ export type {
   ExtensionCallerConfig,
 } from './deeplink'
 export { NOTIFICATION_EVENT_TYPE } from './notifications'
+export { ISLAND_EVENT_TYPE } from './island'
+export type {
+  IslandPriority,
+  IslandAction,
+  IslandOptions,
+  IslandShowResult,
+  IslandEvent,
+  IslandStatus,
+} from './island'
 export type {
   NotificationUrgency,
   NotificationAction,
