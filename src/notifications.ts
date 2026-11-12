@@ -35,6 +35,13 @@ export interface NotificationOptions {
    * the click to the backend.
    */
   openTool?: boolean | string
+  /**
+   * Sound played (unless GNOME Do Not Disturb is on): a GNOME alarm sound
+   * (`'glass-bell'`, `'sparkling'`, … from GNOME Clocks) or a freedesktop
+   * sound theme name. Played with the notification, e.g.
+   * `'alarm-clock-elapsed'` (sent as the `sound-name` hint).
+   */
+  sound?: string
 }
 
 export interface NotificationShowResult {
