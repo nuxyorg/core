@@ -25,6 +25,18 @@ export function computeKeyHints(actions: ShellAction[]): ShellAction[] {
   )
 }
 
+/**
+ * Ctrl+K palette actions: `showInMenu` actions, filtered by `menuActiveOn` when set,
+ * else by `activeOn`.
+ */
+export function computeMenuActions(actions: ShellAction[]): ShellAction[] {
+  return actions.filter((action) => {
+    if (!action.showInMenu) return false
+    const gate = action.menuActiveOn ?? action.activeOn
+    return typeof gate !== 'function' || gate()
+  })
+}
+
 /** Whether a footer hint chip should invoke `handler` on click. */
 export function isShellActionClickable(action: ShellAction): boolean {
   if (action.clickable === false) return false

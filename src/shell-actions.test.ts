@@ -1,5 +1,10 @@
 import { describe, it, expect, vi } from 'vitest'
-import { computeKeyHints, flattenShellActions, isShellActionClickable } from './shell-actions.js'
+import {
+  computeKeyHints,
+  computeMenuActions,
+  flattenShellActions,
+  isShellActionClickable,
+} from './shell-actions.js'
 import type { ShellAction } from './shell.js'
 
 function action(overrides: Partial<ShellAction> = {}): ShellAction {
@@ -103,5 +108,42 @@ describe('isShellActionClickable', () => {
         children: [{ key: 'ArrowUp', label: '', handler: () => {} }],
       })
     ).toBe(false)
+  })
+})
+
+describe('computeMenuActions', () => {
+  const noop = () => {}
+
+  it('keeps showInMenu actions whose activeOn passes', () => {
+    const actions = [
+      { id: 'a', label: 'A', showInMenu: true, handler: noop },
+      { id: 'b', label: 'B', showInMenu: true, activeOn: () => false, handler: noop },
+      { id: 'c', label: 'C', handler: noop },
+    ]
+    expect(computeMenuActions(actions).map((a) => a.id)).toEqual(['a'])
+  })
+
+  it('uses menuActiveOn instead of activeOn for the palette', () => {
+    // Key gated on list focus (activeOn false) but the palette acts on the visible selection.
+    const actions = [
+      {
+        id: 'remove',
+        label: 'Remove',
+        key: 'Delete',
+        showInMenu: true,
+        activeOn: () => false,
+        menuActiveOn: () => true,
+        handler: noop,
+      },
+      {
+        id: 'hidden',
+        label: 'Hidden',
+        showInMenu: true,
+        activeOn: () => true,
+        menuActiveOn: () => false,
+        handler: noop,
+      },
+    ]
+    expect(computeMenuActions(actions).map((a) => a.id)).toEqual(['remove'])
   })
 })

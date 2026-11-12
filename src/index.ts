@@ -228,7 +228,12 @@ export type {
   CoreShell,
   ResetToolStateOptions,
 } from './shell'
-export { computeKeyHints, flattenShellActions, isShellActionClickable } from './shell-actions'
+export {
+  computeKeyHints,
+  computeMenuActions,
+  flattenShellActions,
+  isShellActionClickable,
+} from './shell-actions'
 export type { CoreEvents, NuxyRendererEvent, NuxyRendererEventMap } from './events'
 export { logCaughtError } from './log-caught'
 export { classifyQuery } from './query-context'

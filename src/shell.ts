@@ -30,6 +30,12 @@ export interface ShellAction {
    */
   relevantFor?: QueryType[]
   activeOn?: () => boolean
+  /**
+   * Ctrl+K palette visibility; overrides `activeOn` for the palette only. Use it when
+   * the key binding is gated on list focus (so typing in the omnibar is safe) but the
+   * palette should act on the visibly selected row.
+   */
+  menuActiveOn?: () => boolean
   /** Omit on display groups; keyboard bindings live in `children`. */
   handler?: () => void
   allowRepeat?: boolean
@@ -40,7 +46,7 @@ export interface ShellAction {
 }
 
 export interface ShellBridgeSnapshot {
-  /** Ctrl+K palette actions: `showInMenu` actions, filtered by `activeOn`. */
+  /** Ctrl+K palette actions: `showInMenu` actions, filtered by `menuActiveOn` ?? `activeOn`. */
   toolActions: ShellAction[]
   /** Footer chip actions: actions with a `hint`, filtered by `activeOn`. */
   keyActionHints: ShellAction[]
