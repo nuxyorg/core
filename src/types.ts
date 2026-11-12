@@ -82,6 +82,8 @@ export type ExtensionSettingType =
   | 'list'
   | 'toggle'
   | 'language-list'
+  /** One on/off row per installed extension whose manifest sets `manifestFlag`. */
+  | 'extension-toggles'
 
 export interface ExtensionSettingField {
   key: string
@@ -91,6 +93,16 @@ export interface ExtensionSettingField {
   options?: Array<{ value: unknown; label: string }>
   placeholder?: string
   description?: string
+  /**
+   * `extension-toggles` only: manifest key (e.g. `providerGlance`) that selects the
+   * listed extensions. The stored value is the list of extension ids turned off.
+   */
+  manifestFlag?: string
+  /**
+   * `extension-toggles` only: setting key that stores the listed extensions' order
+   * (ids). When set, Shift+↑↓ in Settings reorders them.
+   */
+  orderKey?: string
 }
 
 export interface ExtensionSettingsSchema {
