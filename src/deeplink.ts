@@ -54,6 +54,14 @@ export interface ParsedDeeplink {
  */
 export interface ExtensionDeeplinkConfig {
   schemes: string[]
+  /**
+   * Schemes delivered in the **background**: the window is not shown and the
+   * renderer is not involved; the payload goes to the extension's worker via
+   * `core.deeplinks.onBackground`. Every entry must also be in `schemes`.
+   * Use for machine-to-machine traffic (e.g. a browser extension pushing data);
+   * a background handler must never start a side effect on its own.
+   */
+  background?: string[]
 }
 
 /**
