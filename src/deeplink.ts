@@ -11,6 +11,16 @@
  * carrying this payload. The renderer shell (`extensions/shell`) listens for it,
  * activates/mounts the target tool if needed, then forwards `path`/`query` to it.
  */
+/**
+ * Where a deeplink came from.
+ *  - `external`: outside Nuxy — OS argv / `second-instance`, macOS `open-url`,
+ *    the control socket's `open:` command (a browser, `xdg-open`, a script).
+ *    Treat its contents as untrusted input.
+ *  - `internal`: Nuxy itself — the renderer's `deeplink:dispatch` (Ctrl+K
+ *    commands, extension handoffs), notification and island clicks.
+ */
+export type DeeplinkSource = 'external' | 'internal'
+
 export interface DeeplinkPayload {
   /** Resolved extension id (manifest.id), already validated against the live registry. */
   extensionId: string
@@ -18,6 +28,8 @@ export interface DeeplinkPayload {
   path: string
   /** Parsed query-string parameters, e.g. { url: "https://..." }. */
   query: Record<string, string>
+  /** Origin of the deeplink; tools must ask before side effects for `external`. */
+  source: DeeplinkSource
 }
 
 /** Result of attempting to parse a raw `nuxy://...` URL string, before registry resolution. */

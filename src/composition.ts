@@ -1,4 +1,5 @@
 import type { ExtensionManifest, QueryAttachment } from './types.js'
+import type { DeeplinkSource } from './deeplink.js'
 
 export interface CompositionSlotDeclaration {
   /** Stable slot name, e.g. "background-layer" */
@@ -44,6 +45,11 @@ export interface NuxyToolElement {
   extensionId: string
   /** Omnibar attachments handed over when the tool was opened (e.g. a pasted image). */
   attachments?: QueryAttachment[]
+  /**
+   * Origin of the deeplink that opened the tool (set alongside `committedQuery`),
+   * or null when the tool was not opened from a deeplink.
+   */
+  deeplinkSource?: DeeplinkSource | null
   onToolActivate?(ctx: ToolActivateContext): void | Promise<void>
   onToolDeactivate?(): void
 }

@@ -252,6 +252,7 @@ export type { QueryType, QueryContext } from './query-context'
 export { DEEPLINK_OPEN_CHANNEL, DEEPLINK_DISPATCH_CHANNEL } from './deeplink'
 export type {
   DeeplinkPayload,
+  DeeplinkSource,
   ParsedDeeplink,
   ExtensionDeeplinkConfig,
   ExtensionCallerCommand,
