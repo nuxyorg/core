@@ -31,6 +31,11 @@ export type HostToWorkerMessage =
     }
   | {
       kind: 'event'
+      type: typeof import('./deeplink.js').DEEPLINK_BACKGROUND_EVENT_TYPE
+      payload: import('./deeplink.js').DeeplinkPayload
+    }
+  | {
+      kind: 'event'
       type: typeof import('./island.js').ISLAND_EVENT_TYPE
       event: import('./island.js').IslandEvent
     }

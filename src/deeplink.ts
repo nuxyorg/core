@@ -91,6 +91,12 @@ export interface ExtensionCallerConfig {
   commands: ExtensionCallerCommand[]
 }
 
+/**
+ * Host → worker message type carrying a background deeplink
+ * (`deeplinks.background`) to `core.deeplinks.onBackground` listeners.
+ */
+export const DEEPLINK_BACKGROUND_EVENT_TYPE = 'deeplink:background' as const
+
 /** IPC channel name the main process uses to push a resolved deeplink to the renderer. */
 export const DEEPLINK_OPEN_CHANNEL = 'deeplink:open' as const
 

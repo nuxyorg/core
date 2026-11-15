@@ -6,6 +6,7 @@ import type {
   NotificationEvent,
 } from './notifications'
 import type { IslandOptions, IslandShowResult, IslandEvent, IslandStatus } from './island'
+import type { DeeplinkPayload } from './deeplink'
 
 export type { NowPlaying } from './media'
 
@@ -103,6 +104,16 @@ export interface CoreContext {
     setStatus: (status: IslandStatus | null) => Promise<void>
     /** Subscribe to island clicks / action presses. Returns an unsubscribe function. */
     onAction: (listener: (event: IslandEvent) => void) => () => void
+  }
+  /** Deeplinks addressed to this extension. No permission needed. */
+  deeplinks: {
+    /**
+     * Subscribe to **background** deeplinks: paths listed in the manifest's
+     * `deeplinks.background`. They never show the window. The payload is
+     * untrusted (`source: 'external'`); a listener must only update state and
+     * never start a side effect on its own. Returns an unsubscribe function.
+     */
+    onBackground: (listener: (payload: DeeplinkPayload) => void) => () => void
   }
   ipc: {
     handle: <T, R>(
@@ -249,7 +260,11 @@ export type { CoreEvents, NuxyRendererEvent, NuxyRendererEventMap } from './even
 export { logCaughtError } from './log-caught'
 export { classifyQuery } from './query-context'
 export type { QueryType, QueryContext } from './query-context'
-export { DEEPLINK_OPEN_CHANNEL, DEEPLINK_DISPATCH_CHANNEL } from './deeplink'
+export {
+  DEEPLINK_OPEN_CHANNEL,
+  DEEPLINK_DISPATCH_CHANNEL,
+  DEEPLINK_BACKGROUND_EVENT_TYPE,
+} from './deeplink'
 export type {
   DeeplinkPayload,
   DeeplinkSource,
