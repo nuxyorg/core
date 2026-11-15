@@ -47,9 +47,10 @@ export interface ParsedDeeplink {
  * "deeplinks": { "schemes": ["add", "extension/:extId"] }
  * ```
  * Path segments prefixed with `:` are named parameters and match any single
- * path segment. `schemes` is advisory/documentation + validation at dispatch
- * time — dispatch only warns (does not block) when no declared scheme matches,
- * so extensions can still handle freeform paths.
+ * non-empty path segment. The list is enforced: dispatch rejects any deeplink
+ * whose non-empty path matches no declared scheme (error `scheme-not-allowed`).
+ * A deeplink with an empty path (`nuxy://<id>`) only opens the tool and is
+ * always allowed; its query is dropped.
  */
 export interface ExtensionDeeplinkConfig {
   schemes: string[]
