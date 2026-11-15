@@ -58,8 +58,13 @@ export interface CoreContext {
     readDir: (path: string) => Promise<DirEntry[]>
     readFile: (path: string, encoding?: 'utf8') => Promise<string>
     readFileBinary: (path: string) => Promise<Uint8Array>
-    writeFile: (path: string, data: string | Uint8Array) => Promise<void>
-    mkdir: (path: string, opts?: { recursive?: boolean }) => Promise<void>
+    /** `mode` (e.g. `0o600`) is applied to new and existing files. */
+    writeFile: (path: string, data: string | Uint8Array, opts?: { mode?: number }) => Promise<void>
+    mkdir: (path: string, opts?: { recursive?: boolean; mode?: number }) => Promise<void>
+    /** Creates a unique `0700` directory `<tmpdir>/<prefix>XXXXXX` and returns its path. */
+    mkdtemp: (prefix: string) => Promise<string>
+    /** Removes an empty directory. */
+    rmdir: (path: string) => Promise<void>
     rename: (src: string, dest: string) => Promise<void>
     rm: (path: string) => Promise<void>
     stat: (path: string) => Promise<FileStat>
