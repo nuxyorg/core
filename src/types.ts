@@ -41,7 +41,11 @@ export interface ProviderEvalPayload {
   text: string
   /** Present only for providers that declare `providerAccepts`. */
   attachments?: QueryAttachment[]
-  /** True when called for the home glance row (`providerGlance`). */
+  /**
+   * True when called for the home glance (`providerGlance`). Answer with one item;
+   * its optional `glanceShort` (e.g. `21°`) and `icon` are shown when the status
+   * bar is too narrow for `title`.
+   */
   glance?: boolean
 }
 
