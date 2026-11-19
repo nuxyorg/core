@@ -42,7 +42,10 @@ export interface ShellAction {
   handler?: () => void
   allowRepeat?: boolean
   trigger?: 'press' | 'hold'
-  /** Shown when a hold action is released before it completes. */
+  /**
+   * Toast for a hold action released too early. Only used when the action has no footer
+   * chip (`hint`); otherwise the shell shimmers the chip's localized "Hold" words instead.
+   */
   holdCancelToast?: string
   children?: ShellAction[]
 }
