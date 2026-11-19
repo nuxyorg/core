@@ -306,7 +306,7 @@ export {
   flagToken,
 } from './query-tokens'
 export type { TokenSpec, QueryToken, ParsedTokens } from './query-tokens'
-export { waitForKeyRelease } from './key-release'
+export { trackHeldKeys, waitForKeyRelease } from './key-release'
 export {
   parseNaturalTime,
   parseNaturalTimeAll,
