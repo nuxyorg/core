@@ -19,6 +19,8 @@ export interface ShellAction {
    * groups (`children` without a parent `handler`) are non-clickable by default.
    */
   clickable?: boolean
+  /** Renders a check icon in the Ctrl+K palette (toggle / active-filter state). */
+  checked?: boolean
   /** Ctrl+K palette divider grouping. */
   section?: string
   /** Makes the action show up in the Ctrl+K palette. */
