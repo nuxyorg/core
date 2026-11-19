@@ -70,6 +70,12 @@ export interface CoreContext {
     stat: (path: string) => Promise<FileStat>
     homedir: () => string
     tmpdir: () => string
+    /**
+     * This extension's own cache directory (`~/.cache/nuxy/ext/<id>`, created
+     * on first call). Media files in it (mp4, webm, jpg, png, webp) are
+     * served to the frontend as `nuxy-ext://cache/<id>/<file name>`.
+     */
+    cacheDir: () => Promise<string>
   }
   db: {
     open: (name: string) => DbHandle

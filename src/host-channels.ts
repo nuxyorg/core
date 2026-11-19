@@ -10,6 +10,7 @@ export const HostChannel = {
   BROKER_INVOKE: 'broker:invoke',
   CLIPBOARD_WRITE_FILES: 'clipboard:writeFiles',
   FS_FILE_EXISTS: 'fs:fileExists',
+  FS_CACHE_DIR: 'fs:cacheDir',
   THEME_REGISTER: 'theme:register',
   ICONPACK_REGISTER: 'iconpack:register',
   IPC_BROADCAST: 'ipc:broadcast',
